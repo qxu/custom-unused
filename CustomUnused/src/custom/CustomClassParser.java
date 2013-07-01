@@ -6,7 +6,7 @@ import com.github.antlrjavaparser.JavaParser;
 import com.github.antlrjavaparser.ParseException;
 import com.github.antlrjavaparser.api.CompilationUnit;
 
-import custom.factory.ResolvingClassAdapter;
+import custom.factory.ClassFactory;
 
 public class CustomClassParser
 {
@@ -25,7 +25,10 @@ public class CustomClassParser
 			CustomClassVisitor cv = new CustomClassVisitor(source);
 			cu.accept(cv, null);
 
-			System.out.println(cv.classes);
+			for(ClassFactory cf : cv.classes)
+			{
+				System.out.println(cf);
+			}
 			
 			return null;
 		}

@@ -1,6 +1,6 @@
 package custom.factory;
 
-import custom.CustomClass;
+import custom.CustomType;
 
 public class ResolvingClassAdapter extends ClassFactory
 {
@@ -18,7 +18,7 @@ public class ResolvingClassAdapter extends ClassFactory
 		return resolveName;
 	}
 	
-	public CustomClass build()
+	public CustomType build()
 	{
 		ClassFactory cf = resolver.resolve(resolveName);
 		if(cf == null)

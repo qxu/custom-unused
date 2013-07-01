@@ -1,7 +1,5 @@
 package custom;
 
-import custom.factory.ClassFactory;
-
 public class Test2
 {
 	public static void main(String[] args) throws Exception

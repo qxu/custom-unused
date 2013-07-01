@@ -7,6 +7,7 @@ import java.util.Map;
 
 import custom.CustomClass;
 import custom.CustomMethod;
+import custom.CustomType;
 
 public class ClassFactory
 {
@@ -98,26 +99,24 @@ public class ClassFactory
 	public String toString()
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append("{ClassFactory: " + getName());
-		sb.append("\n");
+		sb.append("ClassFactory: " + getName());
 		for(ClassFactory cf : fields)
 		{
-			sb.append("\t" + cf.getLocalName() + "\n");
+			sb.append("\n\t" + cf.getLocalName());
 		}
 		for(MethodFactory mf : methods)
 		{
-			sb.append("  " + mf + "\n");
+			sb.append("\n\t" + mf.toString().replace("\n", "\n\t"));
 		}
-		sb.append("}");
 		return sb.toString();
 	}
 	
-	public CustomClass build()
+	public CustomType build()
 	{
 		if(build != null)
 			return build;
 		
-		List<CustomClass> cFields = new ArrayList<>(fields.size());
+		List<CustomType> cFields = new ArrayList<>(fields.size());
 		List<CustomMethod> cMethods = new ArrayList<>(methods.size());
 		build = new CustomClass(name, cFields, cMethods);
 		for(ClassFactory cf : fields)

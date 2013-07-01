@@ -6,6 +6,7 @@ import java.util.List;
 
 import custom.CustomClass;
 import custom.CustomMethod;
+import custom.CustomType;
 
 public class MethodFactory
 {
@@ -90,15 +91,14 @@ public class MethodFactory
 	public String toString()
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append("{MethodFactory: " + getHeaderName());
-		sb.append("\n");
+		sb.append("MethodFactory: " + getHeaderName());
 		for(ClassFactory cf : vars)
 		{
-			sb.append("\t" + cf.getLocalName() + "\n");
+			sb.append("\n\t" + cf.getName());
 		}
 		for(MethodFactory mf : calls)
 		{
-			sb.append("\t" + mf.getHeaderName());
+			sb.append("\n\t" + mf.getHeaderName());
 		}
 		return sb.toString();
 	}
@@ -108,10 +108,10 @@ public class MethodFactory
 		if(build != null)
 			return build;
 		
-		List<CustomClass> cParams = new ArrayList<>(params.size());
-		List<CustomClass> cVars = new ArrayList<>(vars.size());
+		List<CustomType> cParams = new ArrayList<>(params.size());
+		List<CustomType> cVars = new ArrayList<>(vars.size());
 		List<CustomMethod> cCalls = new ArrayList<>(calls.size());
-		build = new CustomMethod(name, enclosingClass.build(), cParams, cVars, cCalls);
+		build = new CustomMethod(name, (CustomClass)enclosingClass.build(), cParams, cVars, cCalls);
 		for(ClassFactory cf : params)
 		{
 			cParams.add(cf.build());

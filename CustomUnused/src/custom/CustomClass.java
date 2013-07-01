@@ -1,38 +1,36 @@
 package custom;
-import java.util.ArrayList;
+
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public final class CustomClass
+public class CustomClass extends AbstractCustomType
 {
 	private String name;
-	
-	private List<CustomClass> fields;
+
+	private List<CustomType> fields;
 	private List<CustomMethod> methods;
-	
-	private static Map<String, CustomClass> primitiveMap;
+
 	private static Map<Class<?>, CustomClass> reflectMap;
 	private static Map<String, CustomClass> classMap;
-	
+
 	public static CustomClass forReflectionClass(Class<?> clazz)
 	{
 		CustomClass cc = reflectMap.get(clazz);
 		if(cc == null)
 		{
-			cc = new CustomClass(clazz.getName(), false);
+			cc = new CustomClass(clazz.getName());
 			reflectMap.put(clazz, cc);
 		}
 		return cc;
 	}
-	
+
 	public static CustomClass forName(String className)
 	{
-		CustomClass primitive = primitiveMap.get(className);
-		if(primitive != null)
-			return primitive;
-		
+		CustomClass existing = classMap.get(className);
+		if(existing != null)
+			return existing;
+
 		try
 		{
 			Class<?> refClass = Class.forName(className);
@@ -41,72 +39,38 @@ public final class CustomClass
 		catch(ClassNotFoundException e)
 		{
 		}
-		
+
 		return null;
 	}
-	
-//	public static CustomClass loadClass(String name, List<CustomClass> fields, List<CustomMethod> methods)
-//	{
-//		if(classMap.containsKey(name))
-//			throw new IllegalStateException("CustomClass with name " + name + " already loaded");
-//		CustomClass cc = new CustomClass(name, new ArrayList<>(fields), new ArrayList<>(methods));
-//		classMap.put(name, cc);
-//		return cc;
-//	}
-	
-	public static CustomClass loadClass(CustomClass clazz)
+
+	protected CustomClass(String name)
 	{
-		classMap.put(clazz.getName(), clazz);
-		return clazz;
+		this(name, Collections.<CustomType>emptyList(), Collections.<CustomMethod>emptyList());
 	}
-	
-	public CustomClass(String name, List<CustomClass> fields, List<CustomMethod> methods)
+
+	public CustomClass(String name, List<CustomType> fields, List<CustomMethod> methods)
 	{
+		if(classMap.containsKey(name))
+			throw new IllegalStateException(name + " already initialized");
+		
 		this.name = name;
 		this.fields = fields;
 		this.methods = methods;
+		classMap.put(name, this);
 	}
-	
-	private CustomClass(String name, boolean primitive)
-	{
-		this.name = name;
-		this.fields = new ArrayList<>();
-		this.methods = new ArrayList<>();
-	}
-	
+
 	public String getName()
 	{
 		return this.name;
 	}
-	
-	public List<CustomClass> getFields()
+
+	public List<CustomType> getFields()
 	{
 		return Collections.unmodifiableList(fields);
 	}
-	
+
 	public List<CustomMethod> getMethods()
 	{
 		return Collections.unmodifiableList(methods);
-	}
-	
-	@Override
-	public String toString()
-	{
-		return "{CustomClass name=" + getName() + "}";
-	}
-	
-	static
-	{
-		primitiveMap = new HashMap<>();
-		primitiveMap.put("boolean", new CustomClass("boolean", true));
-		primitiveMap.put("byte", new CustomClass("byte", true));
-		primitiveMap.put("short", new CustomClass("short", true));
-		primitiveMap.put("int", new CustomClass("int", true));
-		primitiveMap.put("long", new CustomClass("long", true));
-		primitiveMap.put("float", new CustomClass("float", true));
-		primitiveMap.put("double", new CustomClass("double", true));
-		primitiveMap.put("char", new CustomClass("char", true));
-		
-		reflectMap = new HashMap<>();
 	}
 }

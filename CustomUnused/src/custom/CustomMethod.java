@@ -8,12 +8,12 @@ public final class CustomMethod
 	private String name;
 	private CustomClass clazz;
 	
-	private List<CustomClass> params;
-	private List<CustomClass> vars;
+	private List<CustomType> params;
+	private List<CustomType> vars;
 	private List<CustomMethod> calls;
 	
 	public CustomMethod(String name, CustomClass clazz,
-			List<CustomClass> params, List<CustomClass> vars, List<CustomMethod> calls)
+			List<CustomType> params, List<CustomType> vars, List<CustomMethod> calls)
 	{
 		this.name = name;
 		this.params = params;
@@ -32,12 +32,12 @@ public final class CustomMethod
 		return this.clazz;
 	}
 	
-	public List<CustomClass> getParamTypeDeclarations()
+	public List<CustomType> getParamTypeDeclarations()
 	{
 		return Collections.unmodifiableList(params);
 	}
 	
-	public List<CustomClass> getTypeDeclarations()
+	public List<CustomType> getTypeDeclarations()
 	{
 		return Collections.unmodifiableList(vars);
 	}
